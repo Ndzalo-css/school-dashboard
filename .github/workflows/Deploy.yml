@@ -12,19 +12,14 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v3
 
-    - name: Validate HTML exists
-      run: |
-        if [ ! -f index.html ]; then
-          echo "index.html missing!"
-          exit 1
-        fi
+    - name: Build Docker image
+      run: docker build -t school-dashboard .
 
-    - name: Check CSS
+    - name: Run container test
       run: |
-        if [ ! -f style.css ]; then
-          echo "style.css missing!"
-          exit 1
-        fi
+        docker run -d -p 8080:80 school-dashboard
+        sleep 5
+        curl -f http://localhost:8080 || exit 1
 
-    - name: Success message
-      run: echo "Pipeline passed successfully"
+    - name: Success
+      run: echo "Docker container works!"
