@@ -1,0 +1,51 @@
+body {
+    font-family: Arial;
+    margin: 0;
+    background: #f4f6f9;
+}
+
+header {
+    background: #2c3e50;
+    color: white;
+    padding: 15px;
+    text-align: center;
+}
+
+.cards {
+    display: flex;
+    justify-content: space-around;
+    margin: 20px;
+}
+
+.card {
+    padding: 20px;
+    border-radius: 12px;
+    color: white;
+    width: 150px;
+    text-align: center;
+}
+
+.green { background: #4CAF50; }
+.yellow { background: #FFC107; }
+.orange { background: #FF5722; }
+.purple { background: #9C27B0; }
+
+table {
+    width: 80%;
+    margin: auto;
+    border-collapse: collapse;
+    background: white;
+}
+
+th {
+    background: #2c3e50;
+    color: white;
+}
+
+td, th {
+    padding: 12px;
+    border: 1px solid #ddd;
+}
+
+.good { color: green; }
+.average { color: orange; }
