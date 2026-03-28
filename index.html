@@ -29,7 +29,6 @@
     padding: 0 0 40px;
   }
 
-  /* ── TOP NAV ── */
   nav {
     background: #fff;
     display: flex;
@@ -42,331 +41,102 @@
     top: 0;
     z-index: 10;
   }
-  .nav-logo {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    font-weight: 900;
-    font-size: 1.15rem;
-    color: var(--text);
-  }
+  .nav-logo { display: flex; align-items: center; gap: 10px; font-weight: 900; font-size: 1.15rem; color: var(--text); }
   .nav-logo span { font-size: 1.4rem; }
-  .nav-links {
-    display: flex;
-    gap: 28px;
-    list-style: none;
-  }
-  .nav-links li a {
-    text-decoration: none;
-    color: var(--muted);
-    font-weight: 600;
-    font-size: 0.9rem;
-    transition: color .2s;
-  }
+  .nav-links { display: flex; gap: 28px; list-style: none; }
+  .nav-links li a { text-decoration: none; color: var(--muted); font-weight: 600; font-size: 0.9rem; transition: color .2s; }
   .nav-links li a:hover, .nav-links li a.active { color: var(--text); }
   .nav-right { display: flex; align-items: center; gap: 14px; }
-  .nav-icon {
-    width: 36px; height: 36px;
-    background: #f0f4f0;
-    border-radius: 50%;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 1rem;
-    cursor: pointer;
-  }
-  .nav-avatar {
-    width: 36px; height: 36px;
-    border-radius: 50%;
-    background: linear-gradient(135deg, #f47c3c, #f5c842);
-    display: flex; align-items: center; justify-content: center;
-    color: #fff;
-    font-weight: 800;
-    font-size: 0.85rem;
-  }
+  .nav-icon { width: 36px; height: 36px; background: #f0f4f0; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1rem; cursor: pointer; }
+  .nav-avatar { width: 36px; height: 36px; border-radius: 50%; background: linear-gradient(135deg, #f47c3c, #f5c842); display: flex; align-items: center; justify-content: center; color: #fff; font-weight: 800; font-size: 0.85rem; }
 
-  /* ── PAGE WRAPPER ── */
   .page { padding: 32px 36px; max-width: 1200px; margin: 0 auto; }
 
-  /* ── PAGE HEADER ── */
-  .page-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 28px;
-  }
+  .page-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 28px; }
   .page-header h1 { font-size: 2rem; font-weight: 900; }
-  .class-selector {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    background: #fff;
-    border-radius: 30px;
-    padding: 6px 16px;
-    font-weight: 700;
-    font-size: 0.9rem;
-    box-shadow: var(--shadow);
-    cursor: pointer;
-  }
+  .class-selector { display: flex; align-items: center; gap: 10px; background: #fff; border-radius: 30px; padding: 6px 16px; font-weight: 700; font-size: 0.9rem; box-shadow: var(--shadow); cursor: pointer; }
   .class-selector .dot { width: 10px; height: 10px; border-radius: 50%; background: var(--green); }
   .avatars { display: flex; }
-  .avatars img, .avatar-mini {
-    width: 32px; height: 32px;
-    border-radius: 50%;
-    border: 2px solid #fff;
-    margin-left: -8px;
-  }
-  .avatar-mini {
-    display: flex; align-items: center; justify-content: center;
-    font-size: 0.65rem; font-weight: 800; color: #fff;
-  }
-  .av1 { background: #6bc46a; }
-  .av2 { background: #f5c842; }
-  .av3 { background: #f47c3c; }
-  .av4 { background: #e85555; }
-  .av5 { background: #7c6af4; }
-  .alert-btn {
-    background: #fff;
-    border: none;
-    border-radius: 30px;
-    padding: 7px 18px;
-    font-family: 'Nunito', sans-serif;
-    font-weight: 700;
-    font-size: 0.85rem;
-    cursor: pointer;
-    box-shadow: var(--shadow);
-    display: flex; align-items: center; gap: 6px;
-  }
-  .alert-badge {
-    background: var(--orange);
-    color: #fff;
-    border-radius: 50%;
-    width: 18px; height: 18px;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 0.7rem;
-    font-weight: 800;
-  }
+  .avatar-mini { width: 32px; height: 32px; border-radius: 50%; border: 2px solid #fff; margin-left: -8px; display: flex; align-items: center; justify-content: center; font-size: 0.65rem; font-weight: 800; color: #fff; }
+  .av1 { background: #6bc46a; } .av2 { background: #f5c842; } .av3 { background: #f47c3c; } .av4 { background: #e85555; } .av5 { background: #7c6af4; }
+  .alert-btn { background: #fff; border: none; border-radius: 30px; padding: 7px 18px; font-family: 'Nunito', sans-serif; font-weight: 700; font-size: 0.85rem; cursor: pointer; box-shadow: var(--shadow); display: flex; align-items: center; gap: 6px; }
+  .alert-badge { background: var(--orange); color: #fff; border-radius: 50%; width: 18px; height: 18px; display: flex; align-items: center; justify-content: center; font-size: 0.7rem; font-weight: 800; }
 
-  /* ── TOP STATS ROW ── */
-  .stats-row {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
-    gap: 18px;
-    margin-bottom: 22px;
-  }
+  .stats-row { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr 1fr; gap: 18px; margin-bottom: 22px; }
 
-  /* summary cards */
-  .summary-card {
-    background: var(--card);
-    border-radius: var(--radius);
-    padding: 22px 24px;
-    box-shadow: var(--shadow);
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-    position: relative;
-    overflow: hidden;
-    animation: fadeUp .5s ease both;
-  }
+  .summary-card { background: var(--card); border-radius: var(--radius); padding: 22px 24px; box-shadow: var(--shadow); display: flex; flex-direction: column; gap: 6px; position: relative; overflow: hidden; animation: fadeUp .5s ease both; }
   .summary-card .label { font-size: 0.78rem; color: var(--muted); font-weight: 700; text-transform: uppercase; letter-spacing: .04em; }
   .summary-card .value { font-size: 2.4rem; font-weight: 900; line-height: 1; }
   .summary-card .sub { font-size: 0.75rem; color: var(--muted); font-weight: 600; }
-  .summary-card .icon-blob {
-    position: absolute;
-    right: -8px; bottom: -8px;
-    font-size: 3.5rem;
-    opacity: .12;
-  }
+  .summary-card .icon-blob { position: absolute; right: -8px; bottom: -8px; font-size: 3.5rem; opacity: .12; }
   .card-green .value { color: var(--green); }
   .card-orange .value { color: var(--orange); }
 
-  /* metric chips — the big coloured cards */
-  .metric-chip {
-    border-radius: var(--radius);
-    padding: 20px 18px 16px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    min-height: 130px;
-    box-shadow: var(--shadow);
-    animation: fadeUp .5s ease both;
-    position: relative;
-    overflow: hidden;
-  }
+  .metric-chip { border-radius: var(--radius); padding: 20px 18px 16px; display: flex; flex-direction: column; justify-content: space-between; min-height: 130px; box-shadow: var(--shadow); animation: fadeUp .5s ease both; position: relative; overflow: hidden; }
   .chip-green  { background: var(--green); }
   .chip-yellow { background: var(--yellow); }
   .chip-orange { background: var(--orange); }
+  .metric-chip .chip-num { font-size: 3rem; font-weight: 900; color: #fff; line-height: 1; }
+  .metric-chip .chip-label { font-size: 0.72rem; font-weight: 700; color: rgba(255,255,255,.85); text-transform: uppercase; letter-spacing: .05em; }
+  .metric-chip .chip-sub { font-size: 0.7rem; color: rgba(255,255,255,.75); font-weight: 600; }
+  .chip-avatar { position: absolute; top: 12px; right: 12px; width: 36px; height: 36px; border-radius: 50%; border: 2.5px solid rgba(255,255,255,.5); display: flex; align-items: center; justify-content: center; font-size: 1.1rem; background: rgba(255,255,255,.25); }
 
-  .metric-chip .chip-num {
-    font-size: 3rem;
-    font-weight: 900;
-    color: #fff;
-    line-height: 1;
-  }
-  .metric-chip .chip-label {
-    font-size: 0.72rem;
-    font-weight: 700;
-    color: rgba(255,255,255,.85);
-    text-transform: uppercase;
-    letter-spacing: .05em;
-  }
-  .metric-chip .chip-sub {
-    font-size: 0.7rem;
-    color: rgba(255,255,255,.75);
-    font-weight: 600;
-  }
-  .chip-avatar {
-    position: absolute;
-    top: 12px; right: 12px;
-    width: 36px; height: 36px;
-    border-radius: 50%;
-    border: 2.5px solid rgba(255,255,255,.5);
-    display: flex; align-items: center; justify-content: center;
-    font-size: 1.1rem;
-    background: rgba(255,255,255,.25);
-  }
-
-  /* ── STUDENTS TABLE SECTION ── */
-  .section-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 14px;
-  }
+  .section-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
   .section-header h2 { font-size: 1.1rem; font-weight: 800; }
-  .toggle-pills {
-    display: flex;
-    gap: 6px;
-  }
-  .pill {
-    padding: 5px 14px;
-    border-radius: 20px;
-    font-size: 0.78rem;
-    font-weight: 700;
-    cursor: pointer;
-    border: none;
-    font-family: 'Nunito', sans-serif;
-    background: #fff;
-    color: var(--muted);
-    box-shadow: var(--shadow);
-    transition: background .2s, color .2s;
-  }
+  .toggle-pills { display: flex; gap: 6px; }
+  .pill { padding: 5px 14px; border-radius: 20px; font-size: 0.78rem; font-weight: 700; cursor: pointer; border: none; font-family: 'Nunito', sans-serif; background: #fff; color: var(--muted); box-shadow: var(--shadow); transition: background .2s, color .2s; }
   .pill.active { background: var(--text); color: #fff; }
 
-  .table-card {
-    background: var(--card);
-    border-radius: var(--radius);
-    box-shadow: var(--shadow);
-    overflow: hidden;
-    animation: fadeUp .6s ease both;
-  }
+  .table-card { background: var(--card); border-radius: var(--radius); box-shadow: var(--shadow); overflow: hidden; animation: fadeUp .6s ease both; }
 
   table { width: 100%; border-collapse: collapse; }
   thead tr { background: #fafbfc; }
-  thead th {
-    padding: 14px 18px;
-    text-align: left;
-    font-size: 0.75rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: .05em;
-    color: var(--muted);
-    border-bottom: 1px solid #f0f0f0;
-  }
-  tbody tr {
-    border-bottom: 1px solid #f5f5f5;
-    transition: background .15s;
-  }
+  thead th { padding: 14px 18px; text-align: left; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; color: var(--muted); border-bottom: 1px solid #f0f0f0; }
+  tbody tr { border-bottom: 1px solid #f5f5f5; transition: background .15s; }
   tbody tr:last-child { border-bottom: none; }
   tbody tr:hover { background: #fafbfc; }
-  tbody td {
-    padding: 14px 18px;
-    font-size: 0.88rem;
-    font-weight: 600;
-    vertical-align: middle;
-  }
+  tbody td { padding: 14px 18px; font-size: 0.88rem; font-weight: 600; vertical-align: middle; }
 
-  /* student name cell */
-  .student-name {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-  }
-  .s-avatar {
-    width: 36px; height: 36px;
-    border-radius: 50%;
-    display: flex; align-items: center; justify-content: center;
-    font-weight: 800;
-    font-size: 0.85rem;
-    color: #fff;
-    flex-shrink: 0;
-  }
+  .student-name { display: flex; align-items: center; gap: 12px; }
+  .s-avatar { width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 0.85rem; color: #fff; flex-shrink: 0; }
   .s-name { font-weight: 700; }
   .s-id { font-size: 0.72rem; color: var(--muted); }
 
-  /* work completion */
   .work-bar-wrap { display: flex; align-items: center; gap: 10px; }
   .work-count { font-weight: 700; min-width: 44px; }
-  .bar-track {
-    flex: 1;
-    height: 8px;
-    background: #eee;
-    border-radius: 4px;
-    overflow: hidden;
-  }
-  .bar-fill {
-    height: 100%;
-    border-radius: 4px;
-    transition: width 1s cubic-bezier(.25,.46,.45,.94);
-  }
+  .bar-track { flex: 1; height: 8px; background: #eee; border-radius: 4px; overflow: hidden; }
+  .bar-fill { height: 100%; border-radius: 4px; transition: width 1s cubic-bezier(.25,.46,.45,.94); }
   .fill-green  { background: var(--green); }
   .fill-yellow { background: var(--yellow); }
   .fill-orange { background: var(--orange); }
   .fill-red    { background: var(--red); }
 
-  /* score badge */
-  .score-badge {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    min-width: 62px;
-    padding: 5px 12px;
-    border-radius: 20px;
-    font-weight: 800;
-    font-size: 0.85rem;
-    color: #fff;
-  }
+  .score-badge { display: inline-flex; align-items: center; justify-content: center; min-width: 62px; padding: 5px 12px; border-radius: 20px; font-weight: 800; font-size: 0.85rem; color: #fff; }
 
-  /* metric dots */
-  .dot-row { display: flex; align-items: center; gap: 6px; }
-  .metric-dot {
-    width: 34px; height: 34px;
-    border-radius: 50%;
-    display: flex; align-items: center; justify-content: center;
-    font-weight: 800;
-    font-size: 0.8rem;
-    color: #fff;
-  }
+  .status-chip { display: inline-flex; align-items: center; gap: 5px; padding: 4px 12px; border-radius: 20px; font-size: 0.78rem; font-weight: 700; }
+  .status-good    { background: #e8f8e8; color: #3a9e3a; }
+  .status-average { background: #fff8e0; color: #b08000; }
+  .status-warning { background: #ffeee4; color: #c0501a; }
+  .status-danger  { background: #fde8e8; color: #b02020; }
 
-  /* status chip */
-  .status-chip {
-    display: inline-flex;
-    align-items: center;
-    gap: 5px;
-    padding: 4px 12px;
-    border-radius: 20px;
-    font-size: 0.78rem;
-    font-weight: 700;
-  }
-  .status-good     { background: #e8f8e8; color: #3a9e3a; }
-  .status-average  { background: #fff8e0; color: #b08000; }
-  .status-warning  { background: #ffeee4; color: #c0501a; }
-  .status-dot { width: 7px; height: 7px; border-radius: 50%; }
+  /* Attention badges */
+  .attn-badge { display: inline-flex; align-items: center; padding: 4px 10px; border-radius: 20px; font-size: 0.75rem; font-weight: 700; }
+  .attn-high   { background: #fde8e8; color: #b02020; }
+  .attn-medium { background: #fff8e0; color: #b08000; }
+  .attn-low    { background: #e8f8e8; color: #3a9e3a; }
+
+  /* Handover badges */
+  .hand-urgent  { background: #fde8e8; color: #b02020; }
+  .hand-review  { background: #ffeee4; color: #c0501a; }
+  .hand-monitor { background: #fff8e0; color: #b08000; }
+  .hand-none    { background: #f0f4f0; color: var(--muted); }
+
+  .loading-row td { text-align: center; color: var(--muted); padding: 40px; font-weight: 700; }
 
   @keyframes fadeUp {
     from { opacity: 0; transform: translateY(18px); }
     to   { opacity: 1; transform: translateY(0); }
   }
-
-  /* stagger delays */
   .stats-row > *:nth-child(1) { animation-delay: .05s }
   .stats-row > *:nth-child(2) { animation-delay: .10s }
   .stats-row > *:nth-child(3) { animation-delay: .15s }
@@ -376,7 +146,6 @@
 </head>
 <body>
 
-<!-- NAV -->
 <nav>
   <div class="nav-logo"><span>🎓</span> EduTrack</div>
   <ul class="nav-links">
@@ -395,7 +164,6 @@
 
 <div class="page">
 
-  <!-- PAGE HEADER -->
   <div class="page-header">
     <div style="display:flex;align-items:center;gap:20px;">
       <h1>Dashboard</h1>
@@ -417,18 +185,14 @@
     </div>
   </div>
 
-  <!-- TOP STATS ROW -->
   <div class="stats-row">
-
-    <!-- Overall Class Score -->
     <div class="summary-card card-green">
       <div class="label">Overall Class Score</div>
-      <div class="value">68%</div>
-      <div class="sub">↑ 5% from last week</div>
+      <div class="value" id="avgScore">—</div>
+      <div class="sub" id="avgScoreSub">Loading...</div>
       <div class="icon-blob">🏆</div>
     </div>
 
-    <!-- Work Assigned -->
     <div class="summary-card card-orange">
       <div class="label">Work Assigned</div>
       <div class="value">36</div>
@@ -436,47 +200,42 @@
       <div class="icon-blob">📋</div>
     </div>
 
-    <!-- Chip: Needs Attention -->
     <div class="metric-chip chip-green">
       <div class="chip-avatar">😊</div>
       <div>
-        <div class="chip-num">5</div>
+        <div class="chip-num" id="countOnTrack">—</div>
         <div class="chip-label">On Track</div>
-        <div class="chip-sub">27% of class</div>
+        <div class="chip-sub" id="pctOnTrack">Loading...</div>
       </div>
     </div>
 
-    <!-- Chip: Average -->
     <div class="metric-chip chip-yellow">
       <div class="chip-avatar">😐</div>
       <div>
-        <div class="chip-num">10</div>
+        <div class="chip-num" id="countAverage">—</div>
         <div class="chip-label">Average</div>
-        <div class="chip-sub">46% of class</div>
+        <div class="chip-sub" id="pctAverage">Loading...</div>
       </div>
     </div>
 
-    <!-- Chip: Struggling -->
     <div class="metric-chip chip-orange">
       <div class="chip-avatar">😟</div>
       <div>
-        <div class="chip-num">5</div>
+        <div class="chip-num" id="countStruggling">—</div>
         <div class="chip-label">Struggling</div>
-        <div class="chip-sub">27% of class</div>
+        <div class="chip-sub" id="pctStruggling">Loading...</div>
       </div>
     </div>
-
   </div>
 
-  <!-- STUDENTS TABLE -->
   <div class="section-header">
     <h2>📊 Students Proficiency</h2>
     <div style="display:flex;align-items:center;gap:10px;">
       <span style="font-size:.8rem;color:var(--muted);font-weight:700;">🎯 Learning Objectives</span>
       <div class="toggle-pills">
-        <button class="pill active">All Students</button>
-        <button class="pill">Struggling</button>
-        <button class="pill">Top</button>
+        <button class="pill active" data-filter="all">All Students</button>
+        <button class="pill" data-filter="struggling">Struggling</button>
+        <button class="pill" data-filter="top">Top</button>
       </div>
     </div>
   </div>
@@ -493,144 +252,8 @@
           <th>Handover</th>
         </tr>
       </thead>
-      <tbody>
-
-        <tr>
-          <td>
-            <div class="student-name">
-              <div class="s-avatar" style="background:#f47c3c;">SK</div>
-              <div><div class="s-name">Sabine Klein</div><div class="s-id">#1024</div></div>
-            </div>
-          </td>
-          <td>
-            <div class="work-bar-wrap">
-              <span class="work-count">33/36</span>
-              <div class="bar-track"><div class="bar-fill fill-orange" style="width:92%"></div></div>
-            </div>
-          </td>
-          <td><span class="score-badge" style="background:#e85555;">23%</span></td>
-          <td>
-            <div class="dot-row">
-              <div class="metric-dot" style="background:#e85555;">🔴</div>
-              <span style="font-size:.82rem;font-weight:700;color:var(--muted);">45</span>
-            </div>
-          </td>
-          <td>
-            <div class="dot-row">
-              <div class="metric-dot" style="background:#f5c842;font-size:.7rem;">8</div>
-            </div>
-          </td>
-          <td><span class="status-chip status-warning"><span class="status-dot" style="background:#f47c3c;"></span>At Risk</span></td>
-        </tr>
-
-        <tr>
-          <td>
-            <div class="student-name">
-              <div class="s-avatar" style="background:#7c6af4;">DF</div>
-              <div><div class="s-name">Dania Federizana</div><div class="s-id">#1025</div></div>
-            </div>
-          </td>
-          <td>
-            <div class="work-bar-wrap">
-              <span class="work-count">31/36</span>
-              <div class="bar-track"><div class="bar-fill fill-yellow" style="width:86%"></div></div>
-            </div>
-          </td>
-          <td><span class="score-badge" style="background:#f5c842;color:#7a5c00;">53%</span></td>
-          <td>
-            <div class="dot-row">
-              <div class="metric-dot" style="background:#6bc46a;font-size:.7rem;">35</div>
-            </div>
-          </td>
-          <td>
-            <div class="dot-row">
-              <div class="metric-dot" style="background:#6bc46a;font-size:.7rem;">19</div>
-            </div>
-          </td>
-          <td><span class="status-chip status-average"><span class="status-dot" style="background:#f5c842;"></span>Average</span></td>
-        </tr>
-
-        <tr>
-          <td>
-            <div class="student-name">
-              <div class="s-avatar" style="background:#6bc46a;">SC</div>
-              <div><div class="s-name">Susan Chan</div><div class="s-id">#1026</div></div>
-            </div>
-          </td>
-          <td>
-            <div class="work-bar-wrap">
-              <span class="work-count">27/36</span>
-              <div class="bar-track"><div class="bar-fill fill-green" style="width:75%"></div></div>
-            </div>
-          </td>
-          <td><span class="score-badge" style="background:#6bc46a;">82%</span></td>
-          <td>
-            <div class="dot-row">
-              <div class="metric-dot" style="background:#6bc46a;font-size:.7rem;">14</div>
-            </div>
-          </td>
-          <td>
-            <div class="dot-row">
-              <div class="metric-dot" style="background:#6bc46a;font-size:.7rem;">45</div>
-            </div>
-          </td>
-          <td><span class="status-chip status-good"><span class="status-dot" style="background:#6bc46a;"></span>On Track</span></td>
-        </tr>
-
-        <tr>
-          <td>
-            <div class="student-name">
-              <div class="s-avatar" style="background:#e85555;">MK</div>
-              <div><div class="s-name">Marcus Kim</div><div class="s-id">#1027</div></div>
-            </div>
-          </td>
-          <td>
-            <div class="work-bar-wrap">
-              <span class="work-count">20/36</span>
-              <div class="bar-track"><div class="bar-fill fill-red" style="width:56%"></div></div>
-            </div>
-          </td>
-          <td><span class="score-badge" style="background:#e85555;">41%</span></td>
-          <td>
-            <div class="dot-row">
-              <div class="metric-dot" style="background:#e85555;font-size:.7rem;">52</div>
-            </div>
-          </td>
-          <td>
-            <div class="dot-row">
-              <div class="metric-dot" style="background:#f47c3c;font-size:.7rem;">6</div>
-            </div>
-          </td>
-          <td><span class="status-chip status-warning"><span class="status-dot" style="background:#e85555;"></span>Struggling</span></td>
-        </tr>
-
-        <tr>
-          <td>
-            <div class="student-name">
-              <div class="s-avatar" style="background:#f5c842;color:#7a5c00;">JL</div>
-              <div><div class="s-name">Julia Laurent</div><div class="s-id">#1028</div></div>
-            </div>
-          </td>
-          <td>
-            <div class="work-bar-wrap">
-              <span class="work-count">34/36</span>
-              <div class="bar-track"><div class="bar-fill fill-green" style="width:94%"></div></div>
-            </div>
-          </td>
-          <td><span class="score-badge" style="background:#6bc46a;">77%</span></td>
-          <td>
-            <div class="dot-row">
-              <div class="metric-dot" style="background:#6bc46a;font-size:.7rem;">22</div>
-            </div>
-          </td>
-          <td>
-            <div class="dot-row">
-              <div class="metric-dot" style="background:#6bc46a;font-size:.7rem;">38</div>
-            </div>
-          </td>
-          <td><span class="status-chip status-good"><span class="status-dot" style="background:#6bc46a;"></span>On Track</span></td>
-        </tr>
-
+      <tbody id="studentsTable">
+        <tr class="loading-row"><td colspan="6">⏳ Loading students...</td></tr>
       </tbody>
     </table>
   </div>
@@ -638,20 +261,184 @@
 </div>
 
 <script>
-  // Animate bar fills on load
-  document.querySelectorAll('.bar-fill').forEach(bar => {
-    const w = bar.style.width;
-    bar.style.width = '0';
-    setTimeout(() => bar.style.width = w, 300);
-  });
+  // ── Helpers ──────────────────────────────────────────────────────────────
 
-  // Toggle pills
+  function scoreColor(score) {
+    if (score >= 75) return '#6bc46a';
+    if (score >= 55) return '#f5c842';
+    if (score >= 35) return '#f47c3c';
+    return '#e85555';
+  }
+
+  function barClass(score) {
+    if (score >= 75) return 'fill-green';
+    if (score >= 55) return 'fill-yellow';
+    if (score >= 35) return 'fill-orange';
+    return 'fill-red';
+  }
+
+  function statusClass(status) {
+    const s = status.toLowerCase();
+    if (s === 'on track') return 'status-good';
+    if (s === 'average') return 'status-average';
+    if (s === 'at risk' || s === 'struggling') return 'status-danger';
+    return 'status-warning';
+  }
+
+  function attnClass(level) {
+    if (!level) return 'attn-low';
+    const l = level.toLowerCase();
+    if (l === 'high') return 'attn-high';
+    if (l === 'medium') return 'attn-medium';
+    return 'attn-low';
+  }
+
+  function handoverClass(h) {
+    if (!h) return 'hand-none';
+    const hh = h.toLowerCase();
+    if (hh === 'urgent') return 'hand-urgent';
+    if (hh === 'review') return 'hand-review';
+    if (hh === 'monitor') return 'hand-monitor';
+    return 'hand-none';
+  }
+
+  function initials(name) {
+    return name.split(' ').map(n => n[0]).join('').toUpperCase();
+  }
+
+  // ── Render table ─────────────────────────────────────────────────────────
+
+  function renderTable(data) {
+    const table = document.getElementById('studentsTable');
+    table.innerHTML = '';
+
+    if (!data.length) {
+      table.innerHTML = '<tr class="loading-row"><td colspan="6">No students found.</td></tr>';
+      return;
+    }
+
+    data.forEach(s => {
+      const pct = Math.round((s.work_done / s.work_total) * 100);
+
+      table.innerHTML += `
+        <tr data-status="${s.status.toLowerCase()}">
+          <td>
+            <div class="student-name">
+              <div class="s-avatar" style="background:${scoreColor(s.score)};">
+                ${initials(s.name)}
+              </div>
+              <div>
+                <div class="s-name">${s.name}</div>
+                <div class="s-id">${s.status}</div>
+              </div>
+            </div>
+          </td>
+
+          <td>
+            <div class="work-bar-wrap">
+              <span class="work-count">${s.work_done}/${s.work_total}</span>
+              <div class="bar-track">
+                <div class="bar-fill ${barClass(s.score)}" style="width:${pct}%"></div>
+              </div>
+              <span style="font-size:.75rem;color:var(--muted);min-width:32px;">${pct}%</span>
+            </div>
+          </td>
+
+          <td>
+            <span class="score-badge" style="background:${scoreColor(s.score)};">
+              ${s.score}%
+            </span>
+          </td>
+
+          <td>
+            <span class="attn-badge ${attnClass(s.seeking_attention)}">
+              ${s.seeking_attention || 'N/A'}
+            </span>
+          </td>
+
+          <td style="font-weight:600;font-size:.85rem;">
+            ${s.working_towards || '—'}
+          </td>
+
+          <td>
+            <span class="status-chip ${handoverClass(s.handover)}">
+              ${s.handover || 'None'}
+            </span>
+          </td>
+        </tr>
+      `;
+    });
+
+    // Animate bars after render
+    document.querySelectorAll('.bar-fill').forEach(bar => {
+      const w = bar.style.width;
+      bar.style.width = '0';
+      setTimeout(() => bar.style.width = w, 100);
+    });
+  }
+
+  // ── Update summary chips from data ────────────────────────────────────────
+
+  function updateSummary(data) {
+    const total = data.length;
+    const onTrack    = data.filter(s => s.status.toLowerCase() === 'on track').length;
+    const average    = data.filter(s => s.status.toLowerCase() === 'average').length;
+    const struggling = data.filter(s =>
+      ['struggling', 'at risk'].includes(s.status.toLowerCase())).length;
+
+    const avgScore = Math.round(data.reduce((sum, s) => sum + s.score, 0) / total);
+
+    document.getElementById('avgScore').textContent = avgScore + '%';
+    document.getElementById('avgScoreSub').textContent = `Across ${total} students`;
+
+    document.getElementById('countOnTrack').textContent = onTrack;
+    document.getElementById('pctOnTrack').textContent = Math.round(onTrack / total * 100) + '% of class';
+
+    document.getElementById('countAverage').textContent = average;
+    document.getElementById('pctAverage').textContent = Math.round(average / total * 100) + '% of class';
+
+    document.getElementById('countStruggling').textContent = struggling;
+    document.getElementById('pctStruggling').textContent = Math.round(struggling / total * 100) + '% of class';
+  }
+
+  // ── Filter pills ──────────────────────────────────────────────────────────
+
+  let allStudents = [];
+
   document.querySelectorAll('.pill').forEach(btn => {
     btn.addEventListener('click', () => {
       document.querySelectorAll('.pill').forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
+
+      const filter = btn.dataset.filter;
+      let filtered = allStudents;
+
+      if (filter === 'struggling') {
+        filtered = allStudents.filter(s =>
+          ['struggling', 'at risk'].includes(s.status.toLowerCase()));
+      } else if (filter === 'top') {
+        filtered = allStudents.filter(s => s.status.toLowerCase() === 'on track');
+      }
+
+      renderTable(filtered);
     });
   });
+
+  // ── Fetch from backend ────────────────────────────────────────────────────
+
+  fetch('http://localhost:5000/students')
+    .then(res => res.json())
+    .then(data => {
+      allStudents = data;
+      updateSummary(data);
+      renderTable(data);
+    })
+    .catch(err => {
+      console.error('Failed to load students:', err);
+      document.getElementById('studentsTable').innerHTML =
+        '<tr class="loading-row"><td colspan="6">❌ Could not connect to backend. Is Flask running?</td></tr>';
+    });
 </script>
+
 </body>
 </html>
