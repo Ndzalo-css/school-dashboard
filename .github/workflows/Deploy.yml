@@ -3,7 +3,7 @@ name: School Dashboard CI Pipeline
 on:
   push:
     branches:
-      - main
+      - main 
     tags:
       - "v*"
 
@@ -16,35 +16,38 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v3
 
-      # Determine version (tag or fallback)
       - name: Set Image Version
+        id: version
         run: |
           if [[ "${GITHUB_REF}" == refs/tags/* ]]; then
             echo "TAG=${GITHUB_REF_NAME}" >> $GITHUB_ENV
+            echo "tag=${GITHUB_REF_NAME}" >> $GITHUB_OUTPUT
           else
             echo "TAG=dev-${GITHUB_SHA::7}" >> $GITHUB_ENV
+            echo "tag=dev-${GITHUB_SHA::7}" >> $GITHUB_OUTPUT
           fi
 
-      - name: Build Docker Image
+      # 👇 Now we can use it in step names
+      - name: Build Docker Image (${{ steps.version.outputs.tag }})
         run: |
           docker build \
             -t school-dashboard:${TAG} \
             -t school-dashboard:latest .
 
-      - name: Run Container for Validation
+      - name: Run Container (${{ steps.version.outputs.tag }})
         run: |
           docker run -d -p 8080:80 --name school-dashboard-test school-dashboard:${TAG}
           sleep 10
 
-      - name: Perform Health Check
+      - name: Health Check (${{ steps.version.outputs.tag }})
         run: |
           curl --fail http://localhost:8080 || (echo "Health check failed" && exit 1)
 
-      - name: Cleanup Test Container
+      - name: Cleanup (${{ steps.version.outputs.tag }})
         if: always()
         run: |
           docker stop school-dashboard-test || true
           docker rm school-dashboard-test || true
 
-      - name: Success Message
+      - name: Success (${{ steps.version.outputs.tag }})
         run: echo "Docker image built successfully with tag ${TAG}"
