@@ -10,6 +10,7 @@ jobs:
     name: Build and Push Docker Image
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/staging'
+    environment: staging-env
     outputs:
       NEW_TAG: ${{ steps.set_tag.outputs.NEW_TAG }}
 
