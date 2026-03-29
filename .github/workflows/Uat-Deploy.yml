@@ -3,13 +3,14 @@ name: School Dashboard CI/CD Pipeline
 on:
   push:
     branches:
-      - main
+      - uat
 
 jobs:
   build-and-push:
     name: Build and Push Docker Image
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main'
+    if: github.ref == 'refs/heads/uat'
+   
     outputs:
       NEW_TAG: ${{ steps.set_tag.outputs.NEW_TAG }}
 
