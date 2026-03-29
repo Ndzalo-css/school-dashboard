@@ -25,12 +25,21 @@ jobs:
           echo "${{ secrets.DOCKER_PASSWORD }}" | docker login \
           -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
 
+      # 🔍 Strong validation + debug
       - name: Validate Docker Repo
         run: |
+          echo "Repo length: ${#DOCKER_REPO}"
+
           if [ -z "${DOCKER_REPO}" ]; then
-            echo "ERROR: DOCKER_REPO is not set"
+            echo "ERROR: DOCKER_REPO is empty"
             exit 1
           fi
+
+          if [[ "${DOCKER_REPO}" != *"/"* ]]; then
+            echo "ERROR: DOCKER_REPO must be in format username/repo"
+            exit 1
+          fi
+
           echo "Using Docker repo: ${DOCKER_REPO}"
 
       - name: Generate Version
@@ -57,6 +66,12 @@ jobs:
           git config user.email "github-actions@github.com"
           git tag $NEW_VERSION
           git push origin $NEW_VERSION
+
+      # 🔥 Extra debug before build
+      - name: Debug Tag Values
+        run: |
+          echo "Docker Repo: ${DOCKER_REPO}"
+          echo "Version: ${NEW_VERSION}"
 
       - name: Build Docker Image (${{ steps.version.outputs.version }})
         run: |
