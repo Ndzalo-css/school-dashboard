@@ -3,7 +3,7 @@ name: School Dashboard CI Pipeline
 on:
   push:
     branches:
-      - main
+      - main 
     tags:
       - "v*"
 
