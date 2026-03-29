@@ -5,6 +5,9 @@ on:
     branches:
       - main
 
+permissions:
+  contents: write   # 🔥 THIS FIXES YOUR ERROR
+
 env:
   DOCKER_REPO: ${{ secrets.DOCKER_REPO }}
 
@@ -17,13 +20,11 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v3
 
-      # 🔐 Login to Docker Hub
       - name: Login to Docker Hub
         run: |
           echo "${{ secrets.DOCKER_PASSWORD }}" | docker login \
           -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
 
-      # 📦 Generate version (v1, v2, v3...)
       - name: Generate Version
         id: version
         run: |
@@ -42,7 +43,6 @@ jobs:
           echo "NEW_VERSION=$new_version" >> $GITHUB_ENV
           echo "version=$new_version" >> $GITHUB_OUTPUT
 
-      # 🏷️ Create Git tag
       - name: Create Git Tag (${{ steps.version.outputs.version }})
         run: |
           git config user.name "github-actions"
@@ -50,7 +50,6 @@ jobs:
           git tag $NEW_VERSION
           git push origin $NEW_VERSION
 
-      # 🐳 Build Docker Image
       - name: Build Docker Image (${{ steps.version.outputs.version }})
         run: |
           docker build \
@@ -58,7 +57,6 @@ jobs:
             -t ${DOCKER_REPO}:${NEW_VERSION} \
             -t ${DOCKER_REPO}:latest .
 
-      # 🚀 Push to Docker Hub
       - name: Push Docker Image (${{ steps.version.outputs.version }})
         run: |
           docker push ${DOCKER_REPO}:${NEW_VERSION}
