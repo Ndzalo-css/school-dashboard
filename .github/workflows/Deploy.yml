@@ -8,7 +8,6 @@ on:
 permissions:
   contents: write
 
-# ✅ Hardcoded (confirmed correct)
 env:
   DOCKER_REPO: ndzalo9707/school-dashboard
 
@@ -20,6 +19,8 @@ jobs:
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v3
+        with:
+          fetch-depth: 0  # ✅ needed so git fetch --tags works properly
 
       - name: Login to Docker Hub
         run: |
@@ -28,25 +29,16 @@ jobs:
 
       - name: Validate Docker Repo
         run: |
-          echo "Repo length: ${#DOCKER_REPO}"
-
+          echo "Repo: ${DOCKER_REPO}"
           if [ -z "${DOCKER_REPO}" ]; then
             echo "ERROR: DOCKER_REPO is empty"
             exit 1
           fi
-
           if [[ "${DOCKER_REPO}" != *"/"* ]]; then
             echo "ERROR: DOCKER_REPO must be in format username/repo"
             exit 1
           fi
-
-          echo "Using Docker repo: ${DOCKER_REPO}"
-
-      # 🔥 Clean any hidden characters (extra safety)
-      - name: Clean Docker Repo
-        run: |
-          CLEAN_REPO=$(echo "${DOCKER_REPO}" | xargs)
-          echo "CLEAN_REPO=$CLEAN_REPO" >> $GITHUB_ENV
+          echo "Docker repo is valid: ${DOCKER_REPO}"
 
       - name: Generate Version
         id: version
@@ -58,37 +50,38 @@ jobs:
           if [ -z "$latest" ]; then
             new_version="v1"
           else
-            number=$(echo $latest | tr -d 'v')
+            number=$(echo "$latest" | tr -d 'v')
             number=$((number + 1))
             new_version="v$number"
           fi
 
           echo "NEW_VERSION=$new_version" >> $GITHUB_ENV
           echo "version=$new_version" >> $GITHUB_OUTPUT
+          echo "Generated version: $new_version"
 
-      - name: Create Git Tag (${{ steps.version.outputs.version }})
+      - name: Create Git Tag
         run: |
           git config user.name "github-actions"
           git config user.email "github-actions@github.com"
-          git tag $NEW_VERSION
-          git push origin $NEW_VERSION
+          git tag "$NEW_VERSION"
+          git push origin "$NEW_VERSION"
 
       - name: Debug Tag Values
         run: |
-          echo "Docker Repo: ${CLEAN_REPO}"
+          echo "Docker Repo: ${DOCKER_REPO}"
           echo "Version: ${NEW_VERSION}"
 
-      - name: Build Docker Image (${{ steps.version.outputs.version }})
+      - name: Build Docker Image
         run: |
           docker build \
-            --build-arg APP_VERSION=${NEW_VERSION} \
-            -t ${CLEAN_REPO}:${NEW_VERSION} \
-            -t ${CLEAN_REPO}:latest .
+            --build-arg APP_VERSION="${NEW_VERSION}" \
+            -t "${DOCKER_REPO}:${NEW_VERSION}" \
+            -t "${DOCKER_REPO}:latest" .
 
-      - name: Push Docker Image (${{ steps.version.outputs.version }})
+      - name: Push Docker Image
         run: |
-          docker push ${CLEAN_REPO}:${NEW_VERSION}
-          docker push ${CLEAN_REPO}:latest
+          docker push "${DOCKER_REPO}:${NEW_VERSION}"
+          docker push "${DOCKER_REPO}:latest"
 
       - name: Success
-        run: echo "Successfully pushed ${CLEAN_REPO}:${NEW_VERSION}"
+        run: echo "Successfully pushed ${DOCKER_REPO}:${NEW_VERSION}"
