@@ -261,7 +261,10 @@
 </div>
 
 <script>
-  // ── Helpers ──────────────────────────────────────────────────────────────
+  // ── CONFIG ───────────────────────────────────────────────
+  const API_URL = "http://localhost:5000"; // more reliable than localhost
+
+  // ── Helpers ──────────────────────────────────────────────
 
   function scoreColor(score) {
     if (score >= 75) return '#6bc46a';
@@ -275,14 +278,6 @@
     if (score >= 55) return 'fill-yellow';
     if (score >= 35) return 'fill-orange';
     return 'fill-red';
-  }
-
-  function statusClass(status) {
-    const s = status.toLowerCase();
-    if (s === 'on track') return 'status-good';
-    if (s === 'average') return 'status-average';
-    if (s === 'at risk' || s === 'struggling') return 'status-danger';
-    return 'status-warning';
   }
 
   function attnClass(level) {
@@ -306,7 +301,7 @@
     return name.split(' ').map(n => n[0]).join('').toUpperCase();
   }
 
-  // ── Render table ─────────────────────────────────────────────────────────
+  // ── Render table ─────────────────────────────────────────
 
   function renderTable(data) {
     const table = document.getElementById('studentsTable');
@@ -321,7 +316,7 @@
       const pct = Math.round((s.work_done / s.work_total) * 100);
 
       table.innerHTML += `
-        <tr data-status="${s.status.toLowerCase()}">
+        <tr>
           <td>
             <div class="student-name">
               <div class="s-avatar" style="background:${scoreColor(s.score)};">
@@ -340,7 +335,7 @@
               <div class="bar-track">
                 <div class="bar-fill ${barClass(s.score)}" style="width:${pct}%"></div>
               </div>
-              <span style="font-size:.75rem;color:var(--muted);min-width:32px;">${pct}%</span>
+              <span style="font-size:.75rem;color:var(--muted);">${pct}%</span>
             </div>
           </td>
 
@@ -352,37 +347,29 @@
 
           <td>
             <span class="attn-badge ${attnClass(s.seeking_attention)}">
-              ${s.seeking_attention || 'N/A'}
+              ${s.seeking_attention}
             </span>
           </td>
 
-          <td style="font-weight:600;font-size:.85rem;">
-            ${s.working_towards || '—'}
-          </td>
+          <td>${s.working_towards}</td>
 
           <td>
             <span class="status-chip ${handoverClass(s.handover)}">
-              ${s.handover || 'None'}
+              ${s.handover}
             </span>
           </td>
         </tr>
       `;
     });
-
-    // Animate bars after render
-    document.querySelectorAll('.bar-fill').forEach(bar => {
-      const w = bar.style.width;
-      bar.style.width = '0';
-      setTimeout(() => bar.style.width = w, 100);
-    });
   }
 
-  // ── Update summary chips from data ────────────────────────────────────────
+  // ── Summary ──────────────────────────────────────────────
 
   function updateSummary(data) {
     const total = data.length;
-    const onTrack    = data.filter(s => s.status.toLowerCase() === 'on track').length;
-    const average    = data.filter(s => s.status.toLowerCase() === 'average').length;
+
+    const onTrack = data.filter(s => s.status.toLowerCase() === 'on track').length;
+    const average = data.filter(s => s.status.toLowerCase() === 'average').length;
     const struggling = data.filter(s =>
       ['struggling', 'at risk'].includes(s.status.toLowerCase())).length;
 
@@ -392,53 +379,42 @@
     document.getElementById('avgScoreSub').textContent = `Across ${total} students`;
 
     document.getElementById('countOnTrack').textContent = onTrack;
-    document.getElementById('pctOnTrack').textContent = Math.round(onTrack / total * 100) + '% of class';
+    document.getElementById('pctOnTrack').textContent = Math.round(onTrack / total * 100) + '%';
 
     document.getElementById('countAverage').textContent = average;
-    document.getElementById('pctAverage').textContent = Math.round(average / total * 100) + '% of class';
+    document.getElementById('pctAverage').textContent = Math.round(average / total * 100) + '%';
 
     document.getElementById('countStruggling').textContent = struggling;
-    document.getElementById('pctStruggling').textContent = Math.round(struggling / total * 100) + '% of class';
+    document.getElementById('pctStruggling').textContent = Math.round(struggling / total * 100) + '%';
   }
 
-  // ── Filter pills ──────────────────────────────────────────────────────────
+  // ── Fetch ────────────────────────────────────────────────
 
   let allStudents = [];
 
-  document.querySelectorAll('.pill').forEach(btn => {
-    btn.addEventListener('click', () => {
-      document.querySelectorAll('.pill').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
+  fetch(`${API_URL}/students`)
+    .then(res => {
+      console.log("STATUS:", res.status);
 
-      const filter = btn.dataset.filter;
-      let filtered = allStudents;
-
-      if (filter === 'struggling') {
-        filtered = allStudents.filter(s =>
-          ['struggling', 'at risk'].includes(s.status.toLowerCase()));
-      } else if (filter === 'top') {
-        filtered = allStudents.filter(s => s.status.toLowerCase() === 'on track');
+      if (!res.ok) {
+        throw new Error("Server error: " + res.status);
       }
 
-      renderTable(filtered);
-    });
-  });
-
-  // ── Fetch from backend ────────────────────────────────────────────────────
-
-  fetch('https://school-dashboard-backend-zd0y.onrender.com/students')
-    .then(res => res.json())
+      return res.json();
+    })
     .then(data => {
+      console.log("DATA RECEIVED:", data);
+
       allStudents = data;
       updateSummary(data);
       renderTable(data);
     })
     .catch(err => {
-      console.error('Failed to load students:', err);
+      console.error("ERROR:", err);
+
       document.getElementById('studentsTable').innerHTML =
-        '<tr class="loading-row"><td colspan="6">❌ Could not connect to backend. Is Flask running?</td></tr>';
+        `<tr class="loading-row">
+          <td colspan="6">❌ ${err.message}</td>
+        </tr>`;
     });
 </script>
-
-</body>
-</html>

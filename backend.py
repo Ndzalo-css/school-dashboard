@@ -6,7 +6,10 @@ from prometheus_client import Counter, generate_latest
 app = Flask(__name__)
 
 # ✅ Allow your GitHub Pages frontend
-CORS(app, origins=["https://ndzalo-css.github.io"])
+CORS(app, origins=[
+    "http://localhost:8080",
+    "https://ndzalo-css.github.io"
+])
 
 # 🔥 Prometheus metric (counts requests)
 REQUEST_COUNT = Counter("app_requests_total", "Total App Requests")
