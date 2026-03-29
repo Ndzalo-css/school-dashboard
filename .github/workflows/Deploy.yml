@@ -6,7 +6,7 @@ on:
       - main
 
 permissions:
-  contents: write   # 🔥 THIS FIXES YOUR ERROR
+  contents: write
 
 env:
   DOCKER_REPO: ${{ secrets.DOCKER_REPO }}
@@ -24,6 +24,14 @@ jobs:
         run: |
           echo "${{ secrets.DOCKER_PASSWORD }}" | docker login \
           -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+
+      - name: Validate Docker Repo
+        run: |
+          if [ -z "${DOCKER_REPO}" ]; then
+            echo "ERROR: DOCKER_REPO is not set"
+            exit 1
+          fi
+          echo "Using Docker repo: ${DOCKER_REPO}"
 
       - name: Generate Version
         id: version
