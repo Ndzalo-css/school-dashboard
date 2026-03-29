@@ -10,7 +10,7 @@ permissions:
 
 # ✅ Hardcoded (confirmed correct)
 env:
-  DOCKER_REPO: school-dashboard
+  DOCKER_REPO: ndzalo9707/school-dashboard
 
 jobs:
   build-and-push:
