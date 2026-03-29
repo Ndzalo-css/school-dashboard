@@ -8,9 +8,6 @@ on:
 permissions:
   contents: write
 
-env:
-  DOCKER_REPO: ndzalo9707/school-dashboard
-
 jobs:
   build-scan-push:
     name: Build, Tag, and Push Docker Image
@@ -22,8 +19,18 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Set Short SHA
-        run: echo "SHORT_SHA=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
+      - name: Increment Version
+        run: |
+          CURRENT=${{ vars.IMAGE_VERSION }}
+          NEW_VERSION=$((CURRENT + 1))
+          echo "NEW_VERSION=v$NEW_VERSION" >> $GITHUB_ENV
+
+          # Update the variable in GitHub so next run sees the incremented value
+          curl -s -X PATCH \
+            -H "Authorization: Bearer ${{ secrets.PAT_TOKEN }}" \
+            -H "Accept: application/vnd.github+json" \
+            https://api.github.com/repos/${{ github.repository }}/actions/variables/IMAGE_VERSION \
+            -d "{\"name\":\"IMAGE_VERSION\",\"value\":\"$NEW_VERSION\"}"
 
       - name: Docker Login
         run: |
@@ -32,12 +39,14 @@ jobs:
 
       - name: Build Docker Image
         run: |
-          docker build -t $DOCKER_REPO:latest -t $DOCKER_REPO:sha-$SHORT_SHA .
+          docker build \
+            -t ${{ vars.DOCKER_REPO }}:${NEW_VERSION} \
+            -t ${{ vars.DOCKER_REPO }}:latest .
 
       - name: Push Docker Images
         run: |
-          docker push $DOCKER_REPO:latest
-          docker push $DOCKER_REPO:sha-$SHORT_SHA
+          docker push ${{ vars.DOCKER_REPO }}:${NEW_VERSION}
+          docker push ${{ vars.DOCKER_REPO }}:latest
 
       - name: Success
-        run: echo "Pushed $DOCKER_REPO:sha-$SHORT_SHA and $DOCKER_REPO:latest"
+        run: echo "Pushed ${{ vars.DOCKER_REPO }}:${NEW_VERSION} and ${{ vars.DOCKER_REPO }}:latest"
