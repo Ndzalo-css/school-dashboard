@@ -8,9 +8,6 @@ on:
 permissions:
   contents: write
 
-env:
-  DOCKER_REPO: ndzalo9707/school-dashboard
-
 jobs:
   build-scan-push:
     name: Build, Tag, and Push Docker Image
@@ -24,6 +21,8 @@ jobs:
 
       - name: Increment Version
         run: |
+          echo "DOCKER_REPO=${{ vars.DOCKER_REPO }}" >> $GITHUB_ENV
+
           CURRENT=${{ vars.IMAGE_VERSION }}
           NEW_VERSION=$((CURRENT + 1))
           echo "NEW_VERSION=v$NEW_VERSION" >> $GITHUB_ENV
