@@ -21,7 +21,7 @@ jobs:
 
       - name: Increment Version
         run: |
-          echo "DOCKER_REPO=${{ vars.DOCKER_REPO }}" >> $GITHUB_ENV
+          echo "DOCKER_REPO=${{ secrets.DOCKER_REPO }}" >> $GITHUB_ENV  # 👈 changed vars to secrets
 
           CURRENT=${{ vars.IMAGE_VERSION }}
           NEW_VERSION=$((CURRENT + 1))
@@ -32,7 +32,6 @@ jobs:
             -H "Accept: application/vnd.github+json" \
             https://api.github.com/repos/${{ github.repository }}/actions/variables/IMAGE_VERSION \
             -d "{\"name\":\"IMAGE_VERSION\",\"value\":\"$NEW_VERSION\"}"
-
       - name: Docker Login
         run: |
           echo "${{ secrets.DOCKER_PASSWORD }}" | docker login \
