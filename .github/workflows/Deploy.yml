@@ -8,7 +8,7 @@ on:
 permissions:
   contents: write
 
-# 🔥 HARDCODED FOR TESTING (this will fix your current issue)
+# ✅ Hardcoded (confirmed correct)
 env:
   DOCKER_REPO: ndzalo9707/school-dashboard
 
@@ -42,6 +42,12 @@ jobs:
 
           echo "Using Docker repo: ${DOCKER_REPO}"
 
+      # 🔥 Clean any hidden characters (extra safety)
+      - name: Clean Docker Repo
+        run: |
+          CLEAN_REPO=$(echo "${DOCKER_REPO}" | xargs)
+          echo "CLEAN_REPO=$CLEAN_REPO" >> $GITHUB_ENV
+
       - name: Generate Version
         id: version
         run: |
@@ -69,20 +75,20 @@ jobs:
 
       - name: Debug Tag Values
         run: |
-          echo "Docker Repo: ${DOCKER_REPO}"
+          echo "Docker Repo: ${CLEAN_REPO}"
           echo "Version: ${NEW_VERSION}"
 
       - name: Build Docker Image (${{ steps.version.outputs.version }})
         run: |
           docker build \
             --build-arg APP_VERSION=${NEW_VERSION} \
-            -t ${DOCKER_REPO}:${NEW_VERSION} \
-            -t ${DOCKER_REPO}:latest .
+            -t ${CLEAN_REPO}:${NEW_VERSION} \
+            -t ${CLEAN_REPO}:latest .
 
       - name: Push Docker Image (${{ steps.version.outputs.version }})
         run: |
-          docker push ${DOCKER_REPO}:${NEW_VERSION}
-          docker push ${DOCKER_REPO}:latest
-    
+          docker push ${CLEAN_REPO}:${NEW_VERSION}
+          docker push ${CLEAN_REPO}:latest
+
       - name: Success
-        run: echo "Successfully pushed ${DOCKER_REPO}:${NEW_VERSION}"
+        run: echo "Successfully pushed ${CLEAN_REPO}:${NEW_VERSION}"
