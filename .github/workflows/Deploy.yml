@@ -8,8 +8,9 @@ on:
 permissions:
   contents: write
 
+# 🔥 HARDCODED FOR TESTING (this will fix your current issue)
 env:
-  DOCKER_REPO: ${{ secrets.DOCKER_REPO }}
+  DOCKER_REPO: ndzalo9707/school-dashboard
 
 jobs:
   build-and-push:
@@ -25,7 +26,6 @@ jobs:
           echo "${{ secrets.DOCKER_PASSWORD }}" | docker login \
           -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
 
-      # 🔍 Strong validation + debug
       - name: Validate Docker Repo
         run: |
           echo "Repo length: ${#DOCKER_REPO}"
@@ -67,7 +67,6 @@ jobs:
           git tag $NEW_VERSION
           git push origin $NEW_VERSION
 
-      # 🔥 Extra debug before build
       - name: Debug Tag Values
         run: |
           echo "Docker Repo: ${DOCKER_REPO}"
@@ -84,6 +83,6 @@ jobs:
         run: |
           docker push ${DOCKER_REPO}:${NEW_VERSION}
           docker push ${DOCKER_REPO}:latest
-
+    
       - name: Success
         run: echo "Successfully pushed ${DOCKER_REPO}:${NEW_VERSION}"
