@@ -84,4 +84,4 @@ jobs:
           docker push "${DOCKER_REPO}:latest"
 
       - name: Success
-        run: echo "Successfully pushed ${DOCKER_REPO}:${NEW_VERSION}"
+        run: echo "Successfully pushed ${CLEAN_REPO}:${NEW_VERSION}"
