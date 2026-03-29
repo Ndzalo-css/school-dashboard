@@ -6,4 +6,4 @@ scrape_configs:
     metrics_path: /metrics
     scheme: https
     static_configs:
-      - targets: ["https://school-dashboard-backend-zd0y.onrender.com"]
+      - targets: ["school-dashboard-backend-zd0y.onrender.com"]
