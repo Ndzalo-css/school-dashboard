@@ -1,25 +1,50 @@
-name: CI Pipeline
+name: School Dashboard CI Pipeline
 
 on:
   push:
-    branches: ["main"]
+    branches:
+      - main
+    tags:
+      - "v*"
 
 jobs:
-  build:
+  build-and-test:
+    name: Build and Validate Docker Image
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v3
+      - name: Checkout Repository
+        uses: actions/checkout@v3
 
-    - name: Build Docker image
-      run: docker build -t school-dashboard .
+      # Determine version (tag or fallback)
+      - name: Set Image Version
+        run: |
+          if [[ "${GITHUB_REF}" == refs/tags/* ]]; then
+            echo "TAG=${GITHUB_REF_NAME}" >> $GITHUB_ENV
+          else
+            echo "TAG=dev-${GITHUB_SHA::7}" >> $GITHUB_ENV
+          fi
 
-    - name: Run container test
-      run: |
-        docker run -d -p 8080:80 school-dashboard
-        sleep 5
-        curl -f http://localhost:8080 || exit 1
+      - name: Build Docker Image
+        run: |
+          docker build \
+            -t school-dashboard:${TAG} \
+            -t school-dashboard:latest .
 
-    - name: Success
-      run: echo "Docker container works!"
+      - name: Run Container for Validation
+        run: |
+          docker run -d -p 8080:80 --name school-dashboard-test school-dashboard:${TAG}
+          sleep 10
+
+      - name: Perform Health Check
+        run: |
+          curl --fail http://localhost:8080 || (echo "Health check failed" && exit 1)
+
+      - name: Cleanup Test Container
+        if: always()
+        run: |
+          docker stop school-dashboard-test || true
+          docker rm school-dashboard-test || true
+
+      - name: Success Message
+        run: echo "Docker image built successfully with tag ${TAG}"
