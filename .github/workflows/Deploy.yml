@@ -49,10 +49,5 @@ jobs:
           docker stop school-dashboard-test || true
           docker rm school-dashboard-test || true
 
-<<<<<<< HEAD
-      - name: Success (${{ steps.version.outputs.tag }})
-        run: echo "Docker image built successfully with tag ${TAG}"
-=======
       - name: Success Message
         run: echo "Docker image built successfully with tag ${TAG}"
->>>>>>> 6e5c716b3c2e6f12fe5d76a227ed912aaf153740
