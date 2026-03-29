@@ -1,53 +1,68 @@
-name: School Dashboard CI Pipeline
+name: School Dashboard CI/CD Pipeline
 
 on:
   push:
     branches:
-      - main 
-    tags:
-      - "v*"
+      - main
+
+env:
+  DOCKER_REPO: ${{ secrets.DOCKER_REPO }}
 
 jobs:
-  build-and-test:
-    name: Build and Validate Docker Image
+  build-and-push:
+    name: Build, Tag, and Push Docker Image
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v3
 
-      - name: Set Image Version
+      # 🔐 Login to Docker Hub
+      - name: Login to Docker Hub
+        run: |
+          echo "${{ secrets.DOCKER_PASSWORD }}" | docker login \
+          -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+
+      # 📦 Generate version (v1, v2, v3...)
+      - name: Generate Version
         id: version
         run: |
-          if [[ "${GITHUB_REF}" == refs/tags/* ]]; then
-            echo "TAG=${GITHUB_REF_NAME}" >> $GITHUB_ENV
-            echo "tag=${GITHUB_REF_NAME}" >> $GITHUB_OUTPUT
+          git fetch --tags
+
+          latest=$(git tag -l "v*" | sort -V | tail -n 1)
+
+          if [ -z "$latest" ]; then
+            new_version="v1"
           else
-            echo "TAG=dev-${GITHUB_SHA::7}" >> $GITHUB_ENV
-            echo "tag=dev-${GITHUB_SHA::7}" >> $GITHUB_OUTPUT
+            number=$(echo $latest | tr -d 'v')
+            number=$((number + 1))
+            new_version="v$number"
           fi
 
-      # 👇 Now we can use it in step names
-      - name: Build Docker Image (${{ steps.version.outputs.tag }})
+          echo "NEW_VERSION=$new_version" >> $GITHUB_ENV
+          echo "version=$new_version" >> $GITHUB_OUTPUT
+
+      # 🏷️ Create Git tag
+      - name: Create Git Tag (${{ steps.version.outputs.version }})
+        run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+          git tag $NEW_VERSION
+          git push origin $NEW_VERSION
+
+      # 🐳 Build Docker Image
+      - name: Build Docker Image (${{ steps.version.outputs.version }})
         run: |
           docker build \
-            -t school-dashboard:${TAG} \
-            -t school-dashboard:latest .
+            --build-arg APP_VERSION=${NEW_VERSION} \
+            -t ${DOCKER_REPO}:${NEW_VERSION} \
+            -t ${DOCKER_REPO}:latest .
 
-      - name: Run Container (${{ steps.version.outputs.tag }})
+      # 🚀 Push to Docker Hub
+      - name: Push Docker Image (${{ steps.version.outputs.version }})
         run: |
-          docker run -d -p 8080:80 --name school-dashboard-test school-dashboard:${TAG}
-          sleep 10
+          docker push ${DOCKER_REPO}:${NEW_VERSION}
+          docker push ${DOCKER_REPO}:latest
 
-      - name: Health Check (${{ steps.version.outputs.tag }})
-        run: |
-          curl --fail http://localhost:8080 || (echo "Health check failed" && exit 1)
-
-      - name: Cleanup (${{ steps.version.outputs.tag }})
-        if: always()
-        run: |
-          docker stop school-dashboard-test || true
-          docker rm school-dashboard-test || true
-
-      - name: Success Message
-        run: echo "Docker image built successfully with tag ${TAG}"
+      - name: Success
+        run: echo "Successfully pushed ${DOCKER_REPO}:${NEW_VERSION}"
