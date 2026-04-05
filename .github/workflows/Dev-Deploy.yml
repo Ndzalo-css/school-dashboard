@@ -1,4 +1,4 @@
-name: School Dashboard CI/CD Pipeline
+name: School Dashboard Development CI/CD Pipeline
 
 on:
   push:
@@ -6,8 +6,8 @@ on:
       - development
 
 jobs:
-  build-and-push:
-    name: Build and Push Docker Image
+  build-and-push-frontend:
+    name: Build and Push Frontend Docker Image
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/development'
     environment: dev-env
@@ -17,38 +17,73 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Log in to Docker Hub
-        uses: docker/login-action@v2
+        uses: docker/login-action@v3
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
-      - name: Generate Version Tag
-        id: set_tag
+      - name: Generate Frontend Tags
         run: |
           NEW_TAG="dev-v${{ github.run_number }}"
-          IMAGE_NAME="${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_REPO }}:$NEW_TAG"
+          echo "FRONTEND_IMAGE=${{ secrets.DOCKER_USERNAME }}/school-dashboard-frontend" >> $GITHUB_ENV
+          echo "FRONTEND_TAG=$NEW_TAG" >> $GITHUB_ENV
+          echo "FRONTEND_LATEST=dev-latest" >> $GITHUB_ENV
 
-          echo "New Tag: $NEW_TAG"
-          echo "Image Name: $IMAGE_NAME"
-
-          echo "FINAL_IMAGE=$IMAGE_NAME" >> $GITHUB_ENV
-          echo "LATEST_IMAGE=${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_REPO }}:dev-latest" >> $GITHUB_ENV
-
-      - name: Build Docker Image
+      - name: Build Frontend Docker Image
         run: |
-          echo "Building: $FINAL_IMAGE"
+          echo "Building frontend image: $FRONTEND_IMAGE:$FRONTEND_TAG"
           docker build \
-            -t $FINAL_IMAGE \
-            -t $LATEST_IMAGE .
+            -f frontend/Dockerfile \
+            -t $FRONTEND_IMAGE:$FRONTEND_TAG \
+            -t $FRONTEND_IMAGE:$FRONTEND_LATEST \
+            ./frontend
 
-      - name: Push Docker Image
+      - name: Push Frontend Docker Image
         run: |
-          docker push $FINAL_IMAGE
-          docker push $LATEST_IMAGE
+          docker push $FRONTEND_IMAGE:$FRONTEND_TAG
+          docker push $FRONTEND_IMAGE:$FRONTEND_LATEST
 
       - name: Logout from Docker Hub
         if: always()
         run: docker logout
 
-      - name: Success
-        run: echo "Successfully pushed $FINAL_IMAGE and $LATEST_IMAGE"
+  build-and-push-backend:
+    name: Build and Push Backend Docker Image
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/development'
+    environment: dev-env
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Generate Backend Tags
+        run: |
+          NEW_TAG="dev-v${{ github.run_number }}"
+          echo "BACKEND_IMAGE=${{ secrets.DOCKER_USERNAME }}/school-dashboard-backend" >> $GITHUB_ENV
+          echo "BACKEND_TAG=$NEW_TAG" >> $GITHUB_ENV
+          echo "BACKEND_LATEST=dev-latest" >> $GITHUB_ENV
+
+      - name: Build Backend Docker Image
+        run: |
+          echo "Building backend image: $BACKEND_IMAGE:$BACKEND_TAG"
+          docker build \
+            -f backend/Dockerfile.backend \
+            -t $BACKEND_IMAGE:$BACKEND_TAG \
+            -t $BACKEND_IMAGE:$BACKEND_LATEST \
+            ./backend
+
+      - name: Push Backend Docker Image
+        run: |
+          docker push $BACKEND_IMAGE:$BACKEND_TAG
+          docker push $BACKEND_IMAGE:$BACKEND_LATEST
+
+      - name: Logout from Docker Hub
+        if: always()
+        run: docker logout
