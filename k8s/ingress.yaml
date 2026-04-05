@@ -5,7 +5,7 @@ metadata:
   namespace: school-dashboard
   annotations:
     nginx.ingress.kubernetes.io/rewrite-target: /
-spec: 
+spec:   
   ingressClassName: nginx
   rules:
     - host: school-dashboard.local
