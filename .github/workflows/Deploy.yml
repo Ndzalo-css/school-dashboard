@@ -3,7 +3,7 @@ name: School Dashboard CI/CD Pipeline
 on:
   push:
     branches:
-      - uat
+      - main
 
 jobs:
   build-and-push:
