@@ -4,7 +4,7 @@ metadata:
   name: school-backend-service
   namespace: school-dashboard
 spec:
-  selector:
+  selector:      
     app: school-backend
   ports:
     - protocol: TCP
