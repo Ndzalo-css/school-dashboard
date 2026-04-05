@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: school-backend-service
+  namespace: school-dashboard
+spec:
+  selector:
+    app: school-backend
+  ports:
+    - protocol: TCP
+      port: 5000
+      targetPort: 5000
+  type: ClusterIP
