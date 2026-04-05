@@ -4,7 +4,7 @@ on:
   push:
     branches:
       - main
-
+ 
 jobs:
   build-and-push-frontend:
     name: Build and Push Frontend Docker Image
