@@ -66,21 +66,25 @@ pipeline {
 
         stage('Build Frontend Image') {
             steps {
-                bat '''
-                echo Building frontend Docker image...
-                docker build -t %FRONTEND_IMAGE%:%IMAGE_TAG% -f Dockerfile .
-                docker tag %FRONTEND_IMAGE%:%IMAGE_TAG% %FRONTEND_IMAGE%:latest
-                '''
+                dir('frontend') {
+                    bat '''
+                    echo Building frontend Docker image...
+                    docker build -t %FRONTEND_IMAGE%:%IMAGE_TAG% .
+                    docker tag %FRONTEND_IMAGE%:%IMAGE_TAG% %FRONTEND_IMAGE%:latest
+                    '''
+                }
             }
         }
 
         stage('Build Backend Image') {
             steps {
-                bat '''
-                echo Building backend Docker image...
-                docker build -t %BACKEND_IMAGE%:%IMAGE_TAG% -f Dockerfile.backend .
-                docker tag %BACKEND_IMAGE%:%IMAGE_TAG% %BACKEND_IMAGE%:latest
-                '''
+                dir('backend') {
+                    bat '''
+                    echo Building backend Docker image...
+                    docker build -t %BACKEND_IMAGE%:%IMAGE_TAG% .
+                    docker tag %BACKEND_IMAGE%:%IMAGE_TAG% %BACKEND_IMAGE%:latest
+                    '''
+                }
             }
         }
 
