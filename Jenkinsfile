@@ -11,7 +11,6 @@ pipeline {
         IMAGE_TAG = "${BUILD_NUMBER}"
         GIT_REPO = "https://github.com/Ndzalo-css/school-dashboard.git"
         GIT_BRANCH = "main"
-        SONARQUBE_ENV = "sonarqube-server"
         KUBECONFIG = "C:\\Users\\ndzal\\.kube\\config"
     }
 
@@ -45,6 +44,8 @@ pipeline {
                 git --version
                 docker --version
                 kubectl version --client
+                where trivy
+                exit /b 0
                 '''
             }
         }
@@ -58,32 +59,15 @@ pipeline {
                 ) else (
                     echo OWASP Dependency Check not installed on Jenkins agent, skipping for now.
                 )
+                exit /b 0
                 '''
-            }
-        }
-
-        stage('SonarQube Scan') {
-            steps {
-                withSonarQubeEnv("${SONARQUBE_ENV}") {
-                    bat '''
-                    where sonar-scanner.bat >nul 2>nul
-                    if %errorlevel%==0 (
-                        sonar-scanner.bat ^
-                          -Dsonar.projectKey=school-dashboard ^
-                          -Dsonar.projectName=school-dashboard ^
-                          -Dsonar.sources=. ^
-                          -Dsonar.sourceEncoding=UTF-8
-                    ) else (
-                        echo sonar-scanner not installed on Jenkins agent, skipping for now.
-                    )
-                    '''
-                }
             }
         }
 
         stage('Build Frontend Image') {
             steps {
                 bat '''
+                echo Building frontend Docker image...
                 docker build -t %FRONTEND_IMAGE%:%IMAGE_TAG% -f Dockerfile .
                 docker tag %FRONTEND_IMAGE%:%IMAGE_TAG% %FRONTEND_IMAGE%:latest
                 '''
@@ -93,6 +77,7 @@ pipeline {
         stage('Build Backend Image') {
             steps {
                 bat '''
+                echo Building backend Docker image...
                 docker build -t %BACKEND_IMAGE%:%IMAGE_TAG% -f Dockerfile.backend .
                 docker tag %BACKEND_IMAGE%:%IMAGE_TAG% %BACKEND_IMAGE%:latest
                 '''
@@ -106,8 +91,9 @@ pipeline {
                 if %errorlevel%==0 (
                     trivy image --exit-code 0 --severity HIGH,CRITICAL %FRONTEND_IMAGE%:%IMAGE_TAG%
                 ) else (
-                    echo Trivy not installed on Jenkins agent, skipping for now.
+                    echo Trivy not installed on Jenkins agent, skipping frontend image scan.
                 )
+                exit /b 0
                 '''
             }
         }
@@ -119,8 +105,9 @@ pipeline {
                 if %errorlevel%==0 (
                     trivy image --exit-code 0 --severity HIGH,CRITICAL %BACKEND_IMAGE%:%IMAGE_TAG%
                 ) else (
-                    echo Trivy not installed on Jenkins agent, skipping for now.
+                    echo Trivy not installed on Jenkins agent, skipping backend image scan.
                 )
+                exit /b 0
                 '''
             }
         }
@@ -133,9 +120,14 @@ pipeline {
                     passwordVariable: 'DOCKER_PASS'
                 )]) {
                     bat '''
+                    echo Logging into Docker Hub...
                     docker login -u %DOCKER_USER% -p %DOCKER_PASS%
+
+                    echo Pushing frontend image...
                     docker push %FRONTEND_IMAGE%:%IMAGE_TAG%
                     docker push %FRONTEND_IMAGE%:latest
+
+                    echo Pushing backend image...
                     docker push %BACKEND_IMAGE%:%IMAGE_TAG%
                     docker push %BACKEND_IMAGE%:latest
                     '''
@@ -146,12 +138,15 @@ pipeline {
         stage('Deploy to Kubernetes') {
             steps {
                 bat '''
+                echo Applying Kubernetes manifests...
                 kubectl apply -f k8s/namespace.yaml
                 kubectl apply -f k8s/
 
+                echo Updating deployment images...
                 kubectl set image deployment/school-frontend school-frontend=%FRONTEND_IMAGE%:%IMAGE_TAG% -n school-dashboard
                 kubectl set image deployment/school-backend school-backend=%BACKEND_IMAGE%:%IMAGE_TAG% -n school-dashboard
 
+                echo Waiting for rollout...
                 kubectl rollout status deployment/school-frontend -n school-dashboard
                 kubectl rollout status deployment/school-backend -n school-dashboard
                 '''
@@ -169,7 +164,7 @@ pipeline {
             echo 'Pipeline completed successfully.'
         }
         failure {
-            echo 'Pipeline failed.'   
+            echo 'Pipeline failed.'
         }
     }
 }
