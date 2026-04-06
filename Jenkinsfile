@@ -28,6 +28,21 @@ pipeline {
             }
         }
 
+        // ✅ NEW STAGE (SonarQube)
+        stage('SonarQube Scan') {
+            steps {
+                withSonarQubeEnv('sonarqube-server') {
+                    bat '''
+                    sonar-scanner ^
+                      -Dsonar.projectKey=school-dashboard ^
+                      -Dsonar.projectName=school-dashboard ^
+                      -Dsonar.sources=. ^
+                      -Dsonar.sourceEncoding=UTF-8
+                    '''
+                }
+            }
+        }
+
         stage('Show Files') {
             steps {
                 bat '''
