@@ -29,19 +29,22 @@ pipeline {
         }
 
         // ✅ NEW STAGE (SonarQube)
-        stage('SonarQube Scan') {
-            steps {
-                withSonarQubeEnv('sonarqube-server') {
-                    bat '''
-                    sonar-scanner ^
-                      -Dsonar.projectKey=school-dashboard ^
-                      -Dsonar.projectName=school-dashboard ^
-                      -Dsonar.sources=. ^
-                      -Dsonar.sourceEncoding=UTF-8
-                    '''
-                }
+   stage('SonarQube Scan') {
+    steps {
+        withSonarQubeEnv('sonarqube-server') {
+            script {
+                def scannerHome = tool 'sonar-scanner'
+                bat """
+                ${scannerHome}\\bin\\sonar-scanner ^
+                  -Dsonar.projectKey=school-dashboard ^
+                  -Dsonar.projectName=school-dashboard ^
+                  -Dsonar.sources=. ^
+                  -Dsonar.sourceEncoding=UTF-8
+                """
             }
         }
+    }
+}
 
         stage('Show Files') {
             steps {
