@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: frontend
-          image: Ndzalo9707/school-dashboard-frontend:latest
+          image: ndzalo9707/school-dashboard-frontend:latest
           imagePullPolicy: Always
           ports:
             - containerPort: 80
