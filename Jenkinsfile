@@ -5,7 +5,7 @@ pipeline {
         APP_NAME = "school-dashboard"
         DOCKERHUB_CREDENTIALS = "dockerhub-creds"
         GITHUB_CREDENTIALS = "github-creds"
-        DOCKERHUB_USERNAME = "Ndzalo9707"
+        DOCKERHUB_USERNAME = "ndzalo9707"
         FRONTEND_IMAGE = "${DOCKERHUB_USERNAME}/school-dashboard-frontend"
         BACKEND_IMAGE = "${DOCKERHUB_USERNAME}/school-dashboard-backend"
         IMAGE_TAG = "${BUILD_NUMBER}"
