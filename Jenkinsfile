@@ -28,23 +28,26 @@ pipeline {
             }
         }
 
-        // ✅ NEW STAGE (SonarQube)
-   stage('SonarQube Scan') {
-    steps {
-        withSonarQubeEnv('sonarqube-server') {
-            script {
-                def scannerHome = tool 'sonar-scanner'
-                bat """
-                ${scannerHome}\\bin\\sonar-scanner ^
-                  -Dsonar.projectKey=school-dashboard ^
-                  -Dsonar.projectName=school-dashboard ^
-                  -Dsonar.sources=. ^
-                  -Dsonar.sourceEncoding=UTF-8
-                """
+        stage('SonarQube Scan') {
+            steps {
+                withSonarQubeEnv('sonarqube-server') {
+                    script {
+                        def scannerHome = tool 'sonar-scanner'
+                        bat """
+                        set SONAR_SCANNER_OPTS=-Xmx1024m
+
+                        ${scannerHome}\\bin\\sonar-scanner ^
+                          -Dsonar.projectKey=school-dashboard ^
+                          -Dsonar.projectName=school-dashboard ^
+                          -Dsonar.sources=frontend,backend ^
+                          -Dsonar.exclusions=**/node_modules/**,**/dist/**,**/build/**,**/.git/**,**/coverage/** ^
+                          -Dsonar.sourceEncoding=UTF-8 ^
+                          -Dsonar.scanAllFiles=false
+                        """
+                    }
+                }
             }
         }
-    }   
-}
 
         stage('Show Files') {
             steps {
@@ -186,7 +189,7 @@ pipeline {
             echo 'Pipeline completed successfully.'
         }
         failure {
-            echo 'Pipeline failed.'  
+            echo 'Pipeline failed.'
         }
     }
 }
